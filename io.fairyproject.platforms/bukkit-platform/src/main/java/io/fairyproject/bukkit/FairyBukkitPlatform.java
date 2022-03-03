@@ -122,6 +122,8 @@ public class FairyBukkitPlatform extends FairyPlatform implements TerminableCons
         return new BukkitMCInitializer();
     }
 
+
+
     @Override
     public void saveResource(String name, boolean replace) {
         PLUGIN.saveResource(name, replace);
