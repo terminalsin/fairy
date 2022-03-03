@@ -40,6 +40,7 @@ import io.fairyproject.container.scanner.ClassPathScanner;
 import io.fairyproject.container.scanner.DefaultClassPathScanner;
 import io.fairyproject.container.scanner.ThreadedClassPathScanner;
 import io.fairyproject.event.EventBus;
+import io.fairyproject.event.impl.PluginEnableEvent;
 import io.fairyproject.event.impl.PostServiceInitialEvent;
 import io.fairyproject.module.ModuleService;
 import io.fairyproject.plugin.Plugin;
@@ -93,7 +94,11 @@ public class ContainerContext {
     }
 
     @Getter
-    private ContainerController[] controllers;
+    private final ContainerController[] controllers = Arrays.asList(
+            new AutowiredContainerController(),
+            new SubscribeEventContainerController()
+
+    ).toArray(new ContainerController[0]);
 
     /**
      * Lookup Storages
@@ -112,14 +117,6 @@ public class ContainerContext {
      */
     public void init() {
         INSTANCE = this;
-
-        // TODO: annotated registration?
-        this.controllers = Arrays.asList(
-
-                new AutowiredContainerController(),
-                new SubscribeEventContainerController()
-
-        ).toArray(new ContainerController[0]);
 
         this.registerObject(new SimpleContainerObject(this, this.getClass()));
         this.registerObject(new SimpleContainerObject(ModuleService.INSTANCE, ModuleService.class));
@@ -210,6 +207,8 @@ public class ContainerContext {
                             ex.printStackTrace();
                         }
                     }
+
+                    EventBus.call(new PluginEnableEvent(plugin));
                 }
 
                 @Override

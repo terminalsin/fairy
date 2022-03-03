@@ -29,7 +29,9 @@ import io.fairyproject.command.annotation.CommandPresence;
 import io.fairyproject.command.argument.ArgCompletionHolder;
 import io.fairyproject.command.exception.ArgTransformException;
 import io.fairyproject.command.parameter.ArgTransformer;
+import io.fairyproject.event.EventBus;
 import io.fairyproject.event.Subscribe;
+import io.fairyproject.event.impl.PluginEnableEvent;
 import io.fairyproject.event.impl.PostServiceInitialEvent;
 import io.fairyproject.util.PreProcessBatch;
 import lombok.Getter;
@@ -108,11 +110,12 @@ public class CommandService {
     }
 
     @Subscribe
-    public void init(final PostServiceInitialEvent event) {
+    public void init(final PluginEnableEvent event) {
         INSTANCE = this;
         LOGGER.info("Injecting fairy commands...");
         this.batch.flushQueue();
         LOGGER.info("Injected!");
+        EventBus.unsubscribeAll(this);
     }
 
     public void registerDefaultPresenceProvider(PresenceProvider<?> presenceProvider) {
