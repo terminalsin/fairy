@@ -87,7 +87,7 @@ public class SidebarService implements TaskRunnable {
     }
 
     private void activate() {
-        if (activated.compareAndSet(true, true)) {
+        if (activated.compareAndSet(false, true)) {
             Task.mainRepeated(this, this.getUpdateTick());
         }
     }
@@ -96,7 +96,7 @@ public class SidebarService implements TaskRunnable {
         int tick = 2;
         for (SidebarAdapter adapter : this.adapters) {
             int adapterTick = adapter.tick();
-            if (adapterTick != -1) {
+            if (adapterTick > 0 && adapterTick < tick) {
                 tick = adapterTick;
                 break;
             }
