@@ -87,7 +87,7 @@ public class SidebarService implements TaskRunnable {
     }
 
     private void activate() {
-        if (activated.compareAndSet(false, true)) {
+        if (activated.compareAndSet(true, true)) {
             Task.mainRepeated(this, this.getUpdateTick());
         }
     }
