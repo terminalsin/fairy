@@ -322,7 +322,7 @@ public final class NBTEditor {
         try {
             methodCache.put( "setProfile", getNMSClass( "CraftMetaSkull" ).getDeclaredMethod( "setProfile", getNMSClass( "GameProfile" ) ) );
             methodCache.get( "setProfile" ).setAccessible( true );
-        } catch( NoSuchMethodException exception ) {
+        } catch( NullPointerException | NoSuchMethodException exception ) {
             // The method doesn't exist, so it's before 1.15.2
         }
 

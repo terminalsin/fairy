@@ -96,7 +96,7 @@ public class SidebarService implements TaskRunnable {
         int tick = 2;
         for (SidebarAdapter adapter : this.adapters) {
             int adapterTick = adapter.tick();
-            if (adapterTick != -1) {
+            if (adapterTick > 0 && adapterTick < tick) {
                 tick = adapterTick;
                 break;
             }
